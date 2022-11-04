@@ -58,9 +58,9 @@ class BSQ
     {
         $pattern = "";
         foreach ($this->dp as $key => $row) {
-            if (strpos(strval(implode($row)), $this->maxSize)) {
+            if (array_search($this->maxSize, $row)) {
                 self::$bsqRow = $key;
-                self::$bsqCol = strpos(strval(implode($row)), $this->maxSize);
+                self::$bsqCol = array_search($this->maxSize, $row);
                 break;
             }
         }
@@ -86,9 +86,9 @@ if (isset($argv[1]) && file_exists($argv[1])) {
     $matrix = explode("\n", $content);
     $rows = count($matrix);
     $col = strlen($matrix[0]);
-    //je mets la derniere ligne du tableau à la meme longueur
+    //on met la derniere ligne du tableau à la meme longueur
     $matrix[$rows - 1] .= "\n";
-    //je decoupe chaque ligne en array
+    //on convertit chaque ligne de string en array
     foreach ($matrix as $key => $row) {
         $matrix[$key] = str_split($row);
     }
