@@ -9,7 +9,7 @@ my $y = $ARGV [1];
 my $density = $ARGV [2];
 my $i = 0;
 my $j = 0;
-# print $y . "\n";
+print $y . "\n";
 while ( $i < $y )
 {
     $j = 0;

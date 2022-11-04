@@ -24,7 +24,7 @@ class BSQ
     public function isValidPos($i, $j)
     {
         //si les positions sont hors du tableau, on retourne false
-        if ($i < 0 || $j < 0 || $i >= $this->rows || $j >= $this->col) {
+        if ($i <= 0 || $j <= 0 || $i >= $this->rows || $j >= $this->col) {
             return false;
         }
         return true;
@@ -36,7 +36,7 @@ class BSQ
             return false;
         }
 
-        if ($i == 0 || $j == 0) {
+        if ($i == 1 || $j == 1) {
             $this->dp[$i][$j] =  1;
         } else {
             $this->dp[$i][$j] =  1 + (int)min($this->dp[$i - 1][$j - 1], $this->dp[$i - 1][$j], $this->dp[$i][$j - 1]);
@@ -46,8 +46,8 @@ class BSQ
 
     public function dp()
     {
-        for ($i = 0; $i < $this->rows; $i++) {
-            for ($j = 0; $j < $this->col; $j++) {
+        for ($i = 1; $i < $this->rows - 1; $i++) {
+            for ($j = 1; $j < $this->col; $j++) {
                 self::isEmpty($i, $j);
             }
         }
@@ -56,7 +56,6 @@ class BSQ
 
     public function getBsq()
     {
-        $pattern = "";
         foreach ($this->dp as $key => $row) {
             if (array_search($this->maxSize, $row)) {
                 self::$bsqRow = $key;
@@ -85,18 +84,20 @@ if (isset($argv[1]) && file_exists($argv[1])) {
     $content = file_get_contents($argv[1]);
     $matrix = explode("\n", $content);
     $rows = count($matrix);
-    $col = strlen($matrix[0]);
+    $col = strlen($matrix[1]);
     //on met la derniere ligne du tableau à la meme longueur
     $matrix[$rows - 1] .= "\n";
     //on convertit chaque ligne de string en array
     foreach ($matrix as $key => $row) {
         $matrix[$key] = str_split($row);
     }
+    array_pop($matrix);
     $bsq = new BSQ($matrix, $rows, $col);
 
     //affichages
     $bsq->dp();
     foreach ($bsq->getBsq() as $row) {
-        echo implode(" ", $row) . PHP_EOL;
+        if (!is_numeric(implode($row)))
+            echo implode($row) . PHP_EOL;
     }
 }
